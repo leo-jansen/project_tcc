@@ -1,0 +1,22 @@
+# pull official base image
+FROM python:3.12.0-alpine
+
+ENV PYTHONUNBUFFERED 1
+RUN apk update && apk add --no-cache build-base freetds openssl freetds-dev libressl-dev krb5-dev
+
+ENV LDFLAGS="-L/usr/lib -L/lib"
+
+# set work directory
+COPY ./api/app /home/equatorial/api/app
+COPY ./api/.env /home/equatorial/api/.env
+COPY ./api/requirements.txt /home/equatorial/api/requirements.txt
+
+WORKDIR /home/equatorial/api
+
+# install dependencies
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir -r ./requirements.txt
+
+EXPOSE 8081
+
+CMD ["uvicorn", "app.main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "8081", "--reload"]

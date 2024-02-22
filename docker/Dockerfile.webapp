@@ -1,0 +1,21 @@
+#compilar o front
+FROM node:20.10.0 AS build
+
+WORKDIR /webapp
+
+COPY ./webapp/package.json ./package.json
+COPY ./webapp/package-lock.json ./package-lock.json
+RUN npm install
+
+COPY ./webapp ./
+RUN npm run build --prod
+
+# executando ngnix para os arquivos compilados
+FROM nginx:alpine
+
+COPY --from=build ./webapp/dist/webapp/browser/ /usr/share/nginx/html/
+COPY ./config/nginx.conf /etc/nginx/conf.d/nginx.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
