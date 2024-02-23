@@ -75,16 +75,16 @@ INSERT INTO [Control].[Profile] ([profile_nm], [status], [Obs]) VALUES (N'Empres
 
 -- Inserção de dados na tabela UsrData
 INSERT INTO [Control].[UsrData] ([usr_nm], [usr_pwd], [profile_id], [id_company], [usr_login], [usr_email], [usr_status])
-VALUES (N'Gabriel Alboretti', N'$2b$12$hi0gE3DUQhDXMAf45fP9meysP5v9C3MWKwYLhL4UtC.avHsiU1TJe', 2, 2, N'gabriel.alboretti', N'gabriel.alboretti@empresaA.com.br', N'S');
+VALUES (N'Gabriel Alboretti', N'$2b$12$NM2vuJbe02PHarBHjLE6ZOg5GmT2AD3yhdzwTtgPbt60v4WIB109e', 2, 2, N'gabriel.alboretti', N'gabriel.alboretti@empresaA.com.br', N'S');
 
 INSERT INTO [Control].[UsrData] ([usr_nm], [usr_pwd], [profile_id], [id_company], [usr_login], [usr_email], [usr_status])
-VALUES (N'Leonardo Fontes', N'$2b$12$hi0gE3DUQhDXMAf45fP9meysP5v9C3MWKwYLhL4UtC.avHsiU1TJe', 3, 2, N'leonardo.fontes', N'leonardo.fontes@empresaA.com.br', N'S');
+VALUES (N'Leonardo Fontes', N'$2b$12$NM2vuJbe02PHarBHjLE6ZOg5GmT2AD3yhdzwTtgPbt60v4WIB109e', 3, 2, N'leonardo.fontes', N'leonardo.fontes@empresaA.com.br', N'S');
 
 INSERT INTO [Control].[UsrData] ([usr_nm], [usr_pwd], [profile_id], [id_company], [usr_login], [usr_email], [usr_status])
-VALUES (N'Rodrigo Nascimento', N'$2b$12$hi0gE3DUQhDXMAf45fP9meysP5v9C3MWKwYLhL4UtC.avHsiU1TJe', 1, 1, N'rodrigo.nascimento', N'rodrigo.nascimento@geral.com.br', N'S');
+VALUES (N'Rodrigo Nascimento', N'$2b$12$NM2vuJbe02PHarBHjLE6ZOg5GmT2AD3yhdzwTtgPbt60v4WIB109e', 1, 1, N'rodrigo.nascimento', N'rodrigo.nascimento@geral.com.br', N'S');
 
 INSERT INTO [Control].[UsrData] ([usr_nm], [usr_pwd], [profile_id], [id_company], [usr_login], [usr_email], [usr_status])
-VALUES (N'Daniel Carolindo', N'$2b$12$hi0gE3DUQhDXMAf45fP9meysP5v9C3MWKwYLhL4UtC.avHsiU1TJe', 3, 4, N'daniel.carolindo', N'daniel.carolindo@empresaC.com.br', N'S');
+VALUES (N'Daniel Carolindo', N'$2b$12$NM2vuJbe02PHarBHjLE6ZOg5GmT2AD3yhdzwTtgPbt60v4WIB109e', 3, 4, N'daniel.carolindo', N'daniel.carolindo@empresaC.com.br', N'S');
 
 -- Adicionando restrições de chave estrangeira
 ALTER TABLE [Control].[UsrData] WITH CHECK ADD CONSTRAINT [UsrData_FK] FOREIGN KEY([id_company]) REFERENCES [Control].[Company] ([id_company]);
