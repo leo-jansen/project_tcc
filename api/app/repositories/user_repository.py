@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Iterable
 
 from fastapi import Depends
@@ -29,8 +30,8 @@ class UserRepository:
                     username=x.usr_login,
                     email=x.usr_email,
                     name=x.usr_nm,
-                    company=x.company.nm_company,
-                    profile=x.profile.profile_nm,
+                    company=x.company.nm_company if x.company else "",
+                    profile=x.profile.profile_nm if x.profile else "",
                 ),
                 list_user,
             )
@@ -44,8 +45,8 @@ class UserRepository:
                     username=x.usr_login,
                     email=x.usr_email,
                     name=x.usr_nm,
-                    company=x.company.nm_company,
-                    profile=x.profile.profile_nm,
+                    company=x.company.nm_company if x.company else "",
+                    profile=x.profile.profile_nm if x.profile else "",
                 ),
                 list_user,
             )
@@ -59,12 +60,17 @@ class UserRepository:
                     username=x.usr_login,
                     email=x.usr_email,
                     name=x.usr_nm,
-                    company=x.company.nm_company,
-                    profile=x.profile.profile_nm,
+                    company=x.company.nm_company if x.company else "",
+                    profile=x.profile.profile_nm if x.profile else "",
                 ),
                 list_user,
             )
         )
+
+    def update_last_login(self, user: User) -> User:
+        user.last_login = datetime.now()
+        self.db.commit()
+        return user
 
     def save(self, user: User) -> User:
         self.db.add(user)

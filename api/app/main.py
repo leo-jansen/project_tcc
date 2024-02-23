@@ -26,12 +26,7 @@ app.include_router(user_router)
 
 
 def start_server():
-    uvicorn.run(
-        app="app.main:app",
-        host=str(APP_HOST),
-        port=int(APP_PORT),
-        reload=True
-    )
+    uvicorn.run(app="app.main:app", host=str(APP_HOST), port=int(APP_PORT), reload=True)
 
 
 if __name__ == "__main__":

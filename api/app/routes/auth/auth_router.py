@@ -26,8 +26,5 @@ async def create_user(
     service: AuthService = Depends(AuthService),
     current_user: User = Depends(authentication),
 ) -> UserOut:
-    try:
-        user_out = service.create_user(data, current_user)
-        return user_out
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=e._message)
+    user_out = service.create_user(data, current_user)
+    return user_out

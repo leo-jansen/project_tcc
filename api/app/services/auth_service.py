@@ -8,6 +8,8 @@ from passlib.context import CryptContext
 from pydantic import BaseModel
 
 from ..models.user import User
+from ..repositories.company_repository import CompanyRepository
+from ..repositories.profile_repository import ProfileRepository
 from ..repositories.user_repository import UserRepository
 from ..schemas.auth_schemas import AccessToken, TokenData, UserIn, UserOut
 from ..util.consts import ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM, SECRET_KEY
@@ -49,11 +51,18 @@ def authentication(
 
 class AuthService:
     user_repository: UserRepository
+    company_repository: CompanyRepository
+    profile_repository: ProfileRepository
 
     def __init__(
-        self, user_repository: UserRepository = Depends(UserRepository)
+        self,
+        user_repository: UserRepository = Depends(UserRepository),
+        company_repository: CompanyRepository = Depends(CompanyRepository),
+        profile_repository: ProfileRepository = Depends(ProfileRepository),
     ) -> None:
         self.user_repository = user_repository
+        self.company_repository = company_repository
+        self.profile_repository = profile_repository
         self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
         pass
 
@@ -75,6 +84,8 @@ class AuthService:
         token = self.create_access_token(
             data={"sub": user.usr_login}, expires_delta=access_token_expires
         )
+        self.user_repository.update_last_login(user)
+
         return {
             "access_token": token,
             "token_type": "bearer",
@@ -105,12 +116,19 @@ class AuthService:
             user.usr_email = user_create.email
             user.usr_nm = user_create.name
             user.usr_status = "S"
+            user.id_company = user_create.company_id
+            user.profile_id = user_create.profile_id
             self.user_repository.save(user)
+
+            company = self.company_repository.find_by_id(user_create.company_id)
+            profile = self.profile_repository.find_by_id(user_create.profile_id)
 
             return UserOut(
                 username=user_create.username,
                 email=user_create.email,
                 name=user_create.name,
+                company=company.nm_company,
+                profile=profile.profile_nm,
             )
         elif (
             current_user.profile_id == user_create.profile_id
@@ -123,12 +141,19 @@ class AuthService:
             user.usr_email = user_create.email
             user.usr_nm = user_create.name
             user.usr_status = "S"
+            user.id_company = user_create.company_id
+            user.profile_id = user_create.profile_id
             self.user_repository.save(user)
+
+            company = self.company_repository.find_by_id(user_create.company_id)
+            profile = self.profile_repository.find_by_id(user_create.profile_id)
 
             return UserOut(
                 username=user_create.username,
                 email=user_create.email,
                 name=user_create.name,
+                company=company.nm_company,
+                profile=profile.profile_nm,
             )
         else:
             raise HTTPException(
