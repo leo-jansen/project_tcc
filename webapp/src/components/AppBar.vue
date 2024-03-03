@@ -10,6 +10,7 @@
         orientation="horizontal"
         :hide-submenu-on-mouse-leave="false"
         display-expr="name"
+        @item-click="itemClick"
       />
     </div>
   </v-app-bar>
@@ -18,6 +19,7 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useAppStore } from '@/stores/app'
+import { useRouter } from 'vue-router'
 import DxMenu from 'devextreme-vue/menu'
 import logo from '@/assets/logo.svg'
 
@@ -26,7 +28,10 @@ export default defineComponent({
   components: { DxMenu },
   setup() {
     const appStore = useAppStore()
-    const showMenu = computed(() => appStore.authenticated);
+    const router = useRouter()
+
+    const showMenu = computed(() => appStore.authenticated)
+
     const menu = [
       {
         id: 1,
@@ -45,11 +50,18 @@ export default defineComponent({
       delay: { show: 0, hide: 500 }
     }
 
+    function itemClick(e: any) {
+      if (e.itemData.name == 'Gerenciar Usuarios') {
+        router.push('/administrador')
+      }
+    }
+
     return {
       menu,
       showSubmenuModes,
       logo,
-      showMenu
+      showMenu,
+      itemClick
     }
   }
 })

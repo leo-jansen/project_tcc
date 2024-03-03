@@ -11,6 +11,7 @@ export const useAppStore = defineStore('app', {
     },
     setUser(state: any) {
       this.user = state;
+      this.authenticated = true;
     }
   }
 })

@@ -13,7 +13,16 @@ const ApiService = {
     return response.data
   },
   getUser: async () => {
-    const response = await api.get("/user", {
+    const response = await api.get("/auth/token", {
+      headers: {
+        Authorization: "bearer " + localStorage.getItem("system_tcc"),
+      },
+    })
+
+    return response.data
+  },
+  getAllUser: async () => {
+    const response = await api.get("/user/all",  {
       headers: {
         Authorization: "bearer " + localStorage.getItem("system_tcc"),
       },
