@@ -35,21 +35,23 @@ services:
     networks:
       - nt_app_estoque
 
-  # webapp:
-  #   build:
-  #     context: .
-  #     dockerfile: docker/Dockerfile.webapp
-  #   container_name: "webapp_equatorial"
-  #   depends_on:
-  #     - api
-  #   ports:
-  #     - 8080:80
-  #   environment:
-  #     - NGINX_HOST=0.0.0.0
-  #   networks:
-  #     - nt_app_estoque
-  #   env_file:
-  #     - .env
+  webapp:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.webapp
+      args:
+        VITE_APP_PUBLIC_PATH: ""
+        VITE_APP_DEV_PORT: "8080"
+        VITE_API_ENDPOINT: "http://localhost:8081"
+    container_name: "webapp_equatorial"
+    depends_on:
+      - api
+    ports:
+      - 80:80
+    environment:
+      - NGINX_HOST=0.0.0.0
+    networks:
+      - nt_app_estoque
 
 networks:
   nt_app_estoque:
