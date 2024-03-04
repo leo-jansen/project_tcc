@@ -90,11 +90,12 @@ class AuthService:
             "access_token": token,
             "token_type": "bearer",
             "user": {
+                "id": user.usr_id,
                 "username": user.usr_login,
                 "email": user.usr_email,
                 "name": user.usr_nm,
-                "company": user.company.nm_company,
-                "profile": user.profile.profile_nm,
+                "company": user.id_company,
+                "profile": user.profile_id,
             },
         }
 
@@ -112,51 +113,73 @@ class AuthService:
         if current_user.profile_id == 1:
             user = User()
             user.usr_login = user_create.username
-            user.usr_pwd = self.get_password_hash(user_create.password)
+            user.usr_pwd = self.get_password_hash("Teste@123")
             user.usr_email = user_create.email
             user.usr_nm = user_create.name
             user.usr_status = "S"
-            user.id_company = user_create.company_id
-            user.profile_id = user_create.profile_id
-            self.user_repository.save(user)
+            user.id_company = user_create.company
+            user.profile_id = user_create.profile
+            user_created = self.user_repository.save(user)
 
-            company = self.company_repository.find_by_id(user_create.company_id)
-            profile = self.profile_repository.find_by_id(user_create.profile_id)
+            company = self.company_repository.find_by_id(user_create.company)
+            profile = self.profile_repository.find_by_id(user_create.profile)
 
             return UserOut(
+                id=user_created.usr_id,
                 username=user_create.username,
                 email=user_create.email,
                 name=user_create.name,
-                company=company.nm_company,
-                profile=profile.profile_nm,
+                company=company.id_company,
+                profile=profile.profile_id,
             )
         elif (
-            current_user.profile_id == user_create.profile_id
-            and current_user.id_company == user_create.company_id
+            current_user.profile_id == user_create.profile
+            and current_user.id_company == user_create.company
             and current_user.profile_id != 3
         ):
             user = User()
             user.usr_login = user_create.username
-            user.usr_pwd = self.get_password_hash(user_create.password)
+            user.usr_pwd = self.get_password_hash("Teste@123")
             user.usr_email = user_create.email
             user.usr_nm = user_create.name
             user.usr_status = "S"
-            user.id_company = user_create.company_id
-            user.profile_id = user_create.profile_id
-            self.user_repository.save(user)
+            user.id_company = user_create.company
+            user.profile_id = user_create.profile
+            user_created = self.user_repository.save(user)
 
             company = self.company_repository.find_by_id(user_create.company_id)
             profile = self.profile_repository.find_by_id(user_create.profile_id)
 
             return UserOut(
+                id=user_created.usr_id,
                 username=user_create.username,
                 email=user_create.email,
                 name=user_create.name,
-                company=company.nm_company,
-                profile=profile.profile_nm,
+                company=company.id_company,
+                profile=profile.profile_id,
             )
         else:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Usuario sem permissão apara essa ação",
             )
+
+    def get_acess_token(self, user: User) -> AccessToken:
+        access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_MINUTES))
+        token = self.create_access_token(
+            data={"sub": user.usr_login}, expires_delta=access_token_expires
+        )
+        self.user_repository.update_last_login(user)
+
+        return {
+            "access_token": token,
+            "token_type": "bearer",
+            "user": {
+                "id": user.usr_id,
+                "username": user.usr_login,
+                "email": user.usr_email,
+                "name": user.usr_nm,
+                "company": user.company.nm_company,
+                "profile": user.profile_id,
+            },
+        }

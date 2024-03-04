@@ -12,19 +12,19 @@ class TokenData(BaseModel):
 
 class UserIn(BaseModel):
     username: str
-    password: str
     email: str
     name: str
-    company_id: int
-    profile_id: int
+    company: int
+    profile: int
 
 
 class UserOut(BaseModel):
+    id: int
     username: str
     email: str
     name: str
-    company: str
-    profile: str
+    company: int
+    profile: int
 
 
 class AccessToken(BaseModel):

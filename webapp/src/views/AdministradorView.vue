@@ -3,18 +3,7 @@
     <div class="col" id="content">
       <div class="card mr-4">
         <div class="card-body">
-          <DxDataGrid :data-source="users" key-expr="id" :show-borders="true">
-            <DxScrolling row-rendering-mode="virtual" />
-            <DxPaging :page-size="10" />
-            <DxPager
-              :visible="true"
-              :allowed-page-sizes="pageSizes"
-              display-mode="full"
-              :show-page-size-selector="true"
-              :show-info="true"
-              :show-navigation-buttons="true"
-            />
-          </DxDataGrid>
+          <dataGridUser />
         </div>
       </div>
     </div>
@@ -23,29 +12,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { DxDataGrid, DxScrolling, DxPager, DxPaging } from 'devextreme-vue/data-grid'
-import apiService from '@/services/Apiservices'
+import dataGridUser from '@/components/DatagridUser.vue'
 
 export default defineComponent({
   name: 'LoginView',
-  components: { DxDataGrid, DxScrolling, DxPaging, DxPager },
-  data() {
-    let users: [] = []
-    const pageSizes = [5, 10, 'all']
-    return {
-      users,
-      pageSizes
-    }
-  },
-  created() {
-    this.getUsers()
-  },
-  methods: {
-    async getUsers() {
-      const users = await apiService.getAllUser()
-      this.$data.users = users
-    }
-  }
+  components: { dataGridUser }
 })
 </script>
 <style>
