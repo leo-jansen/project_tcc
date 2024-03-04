@@ -28,3 +28,12 @@ async def create_user(
 ) -> UserOut:
     user_out = service.create_user(data, current_user)
     return user_out
+
+
+@router.get("/token")
+async def create_user(
+    current_user: User = Depends(authentication),
+    service: AuthService = Depends(AuthService),
+) -> AccessToken:
+    accessToken = service.get_acess_token(current_user)
+    return accessToken

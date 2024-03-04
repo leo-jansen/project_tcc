@@ -13,6 +13,9 @@ class UserRepository:
     def __init__(self, db: Session = Depends(get_db)):
         self.db = db
 
+    def find_by_id(self, id: int) -> User:
+        return self.db.query(User).filter(User.usr_id == id).first()
+
     def find_by_usr_nm(self, name: str) -> User:
         return self.db.query(User).filter(User.usr_nm == name).first()
 
@@ -27,11 +30,12 @@ class UserRepository:
         return list(
             map(
                 lambda x: UserOut(
+                    id=x.usr_id,
                     username=x.usr_login,
                     email=x.usr_email,
                     name=x.usr_nm,
-                    company=x.company.nm_company if x.company else "",
-                    profile=x.profile.profile_nm if x.profile else "",
+                    company=x.id_company,
+                    profile=x.profile_id,
                 ),
                 list_user,
             )
@@ -42,11 +46,12 @@ class UserRepository:
         return list(
             map(
                 lambda x: UserOut(
+                    id=x.usr_id,
                     username=x.usr_login,
                     email=x.usr_email,
                     name=x.usr_nm,
-                    company=x.company.nm_company if x.company else "",
-                    profile=x.profile.profile_nm if x.profile else "",
+                    company=x.id_company,
+                    profile=x.profile_id,
                 ),
                 list_user,
             )
@@ -57,11 +62,12 @@ class UserRepository:
         return list(
             map(
                 lambda x: UserOut(
+                    id=x.usr_id,
                     username=x.usr_login,
                     email=x.usr_email,
                     name=x.usr_nm,
-                    company=x.company.nm_company if x.company else "",
-                    profile=x.profile.profile_nm if x.profile else "",
+                    company=x.id_company,
+                    profile=x.profile_id,
                 ),
                 list_user,
             )
@@ -71,6 +77,17 @@ class UserRepository:
         user.last_login = datetime.now()
         self.db.commit()
         return user
+
+    def update_user(self, user: User) -> UserOut:
+        self.db.commit()
+        return UserOut(
+            id=x.usr_id,
+            username=x.usr_login,
+            email=x.usr_email,
+            name=x.usr_nm,
+            company=x.id_company,
+            profile=x.profile_id,
+        )
 
     def save(self, user: User) -> User:
         self.db.add(user)
