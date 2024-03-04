@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar flat color="#074293">
+  <v-app-bar flat color="#009688">
     <v-toolbar-title>
       <v-img :src="logo" :width="100" style="cursor: pointer" />
     </v-toolbar-title>
