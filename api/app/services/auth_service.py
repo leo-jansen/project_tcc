@@ -133,8 +133,11 @@ class AuthService:
                 profile=profile.profile_id,
             )
         elif (
-            current_user.profile_id == user_create.profile
-            and current_user.id_company == user_create.company
+            current_user.profile_id <= user_create.profile
+            and (
+                current_user.id_company == user_create.company
+                or current_user.id_company == 1
+            )
             and current_user.profile_id != 3
         ):
             user = User()

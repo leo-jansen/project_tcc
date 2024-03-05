@@ -3,7 +3,7 @@ from typing import Iterable
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from ...models.user import User
-from ...schemas.auth_schemas import UserOut, UserIn
+from ...schemas.auth_schemas import UserIn, UserOut
 from ...schemas.user_schemas import CompanyOut, ProfileOut
 from ...services.auth_service import authentication
 from ...services.user_service import UserService

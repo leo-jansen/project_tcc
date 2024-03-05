@@ -81,12 +81,12 @@ class UserRepository:
     def update_user(self, user: User) -> UserOut:
         self.db.commit()
         return UserOut(
-            id=x.usr_id,
-            username=x.usr_login,
-            email=x.usr_email,
-            name=x.usr_nm,
-            company=x.id_company,
-            profile=x.profile_id,
+            id=user.usr_id,
+            username=user.usr_login,
+            email=user.usr_email,
+            name=user.usr_nm,
+            company=user.id_company,
+            profile=user.profile_id,
         )
 
     def save(self, user: User) -> User:
