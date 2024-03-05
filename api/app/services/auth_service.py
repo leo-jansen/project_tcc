@@ -179,7 +179,7 @@ class AuthService:
                 "username": user.usr_login,
                 "email": user.usr_email,
                 "name": user.usr_nm,
-                "company": user.company.nm_company,
+                "company": user.id_company,
                 "profile": user.profile_id,
             },
         }
