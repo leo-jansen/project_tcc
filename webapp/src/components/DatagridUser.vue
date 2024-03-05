@@ -20,7 +20,7 @@
       :show-info="true"
       :show-navigation-buttons="true"
     />
-    <DxEditing :allow-updating="true" :allow-adding="true" mode="popup">
+    <DxEditing :allow-updating="isEditable" :allow-adding="isEditable" mode="popup">
       <DxPopup :show-title="true" :width="700" :height="525" title="" />
       <DxForm>
         <DxItem :col-count="2" :col-span="2" item-type="group">
@@ -65,9 +65,10 @@ import {
 } from 'devextreme-vue/data-grid'
 import { DxItem } from 'devextreme-vue/form'
 import type { PositionConfig } from 'devextreme/animation/position'
-import type { RowInsertedEvent, RowUpdatingEvent  } from 'devextreme/ui/data_grid'
+import type { RowInsertedEvent, RowUpdatingEvent } from 'devextreme/ui/data_grid'
 import { DxToast } from 'devextreme-vue/toast'
 import type { UserGrid, ProfileOut, CompanyOut } from '@/types/Administracao'
+import { useAppStore } from '@/stores/app'
 import apiService from '@/services/Apiservices'
 import type { AxiosError } from 'axios'
 
@@ -105,6 +106,7 @@ export default defineComponent({
     const listCompany: CompanyOut[] = []
 
     const isVisible = ref(false)
+    const isEditable = ref(false)
     const message = ref('')
     const type = ref('info')
 
@@ -117,15 +119,25 @@ export default defineComponent({
       listCompany,
       isVisible,
       message,
-      type
+      type,
+      isEditable
     }
   },
   async created() {
     await this.getProfiles()
     await this.getUsers()
     await this.getCompany()
+    this.isGridEdit()
   },
   methods: {
+    isGridEdit() {
+      const appStore = useAppStore()
+      if (appStore.user != null) {
+        if (appStore.user.profile < 3) {
+          this.isEditable = true
+        }
+      }
+    },
     async getUsers() {
       const users = await apiService.getAllUser()
       this.users = users
@@ -157,19 +169,30 @@ export default defineComponent({
           this.type = 'warning'
           this.message = responseData.detail
           this.isVisible = true
-          setTimeout(()=>{ this.isVisible = false }, 3000)
+          setTimeout(() => {
+            this.isVisible = false
+          }, 3000)
         } else {
           this.type = 'error'
           this.message = 'Error ao cadastrar usuario'
           this.isVisible = true
-          setTimeout(()=>{ this.isVisible = false }, 3000)
+          setTimeout(() => {
+            this.isVisible = false
+          }, 3000)
         }
+      } finally {
+        await this.getProfiles()
+        await this.getUsers()
+        await this.getCompany()
       }
     },
     async updateRow(e: RowUpdatingEvent) {
-      console.log(e)
+      let user = e.oldData
+      for (item in e.newData) {
+        user[`${item}`] = e.newData[`${item}`]
+      }
       try {
-        await apiService.updateUser(e.oldData.id, e.oldData)
+        await apiService.updateUser(e.oldData.id, user)
       } catch (e) {
         const error = e as AxiosError
         if (error.response?.status == 403) {
@@ -177,13 +200,21 @@ export default defineComponent({
           this.type = 'warning'
           this.message = responseData.detail
           this.isVisible = true
-          setTimeout(()=>{ this.isVisible = false }, 3000)
+          setTimeout(() => {
+            this.isVisible = false
+          }, 3000)
         } else {
           this.type = 'error'
           this.message = 'Error ao atualizar usuario'
           this.isVisible = true
-          setTimeout(()=>{ this.isVisible = false }, 3000)
+          setTimeout(() => {
+            this.isVisible = false
+          }, 3000)
         }
+      } finally {
+        await this.getProfiles()
+        await this.getUsers()
+        await this.getCompany()
       }
     }
   }

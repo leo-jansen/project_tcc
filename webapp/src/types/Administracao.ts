@@ -23,5 +23,5 @@ export type UserIn = {
   email: string
   name: string
   company: number
-  profile: Number
+  profile: number
 }

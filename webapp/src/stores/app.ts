@@ -1,15 +1,16 @@
+import type { UserIn } from '@/types/Administracao';
 import { defineStore } from 'pinia'
 
 export const useAppStore = defineStore('app', {
   state: () => ({
-    user: null as any,
+    user: {} as UserIn | null,
     authenticated: false,
   }),
   actions: {
     setAuthenticated(state: boolean) {
       this.authenticated = state;
     },
-    setUser(state: any) {
+    setUser(state: UserIn | null) {
       this.user = state;
       this.authenticated = true;
     }

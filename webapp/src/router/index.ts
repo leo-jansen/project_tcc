@@ -30,8 +30,8 @@ router.beforeEach(async (to, from, next) => {
       next()
     } else {
       try {
-        const user = await apiService.getUser()
-        appStore.setUser(user)
+        const data = await apiService.getUser()
+        appStore.setUser(data.user)
         appStore.setAuthenticated(true)
         next({ name: 'home' })
       } catch (error) {
@@ -46,8 +46,8 @@ router.beforeEach(async (to, from, next) => {
       next({ name: 'login' })
     } else {
       try {
-        const user = await apiService.getUser()
-        appStore.setUser(user)
+        const data = await apiService.getUser()
+        appStore.setUser(data.user)
         appStore.setAuthenticated(true)
         next();
       } catch (error) {
