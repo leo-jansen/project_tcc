@@ -1,4 +1,5 @@
 import 'devextreme/dist/css/dx.light.css';
+import 'devextreme/dist/css/dx.softblue.css';
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'

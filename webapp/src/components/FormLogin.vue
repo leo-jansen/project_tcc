@@ -4,7 +4,7 @@
       <v-alert color="red" dismissible prominent type="error" v-if="visivel"
         >Usuario ou senha invalidos</v-alert
       >
-      <v-toolbar dark color="#009688">
+      <v-toolbar dark color="#074293">
         <v-toolbar-title>Faça Seu Login</v-toolbar-title>
       </v-toolbar>
       <v-card-text>
@@ -28,7 +28,7 @@
       </v-card-text>
       <v-card-actions class="justify-center">
         <v-btn color="grey" outlined>Cancelar</v-btn>
-        <v-btn color="#009688" @click="handleLogin">CONFIRMAR</v-btn>
+        <v-btn color="#074293" @click="handleLogin">CONFIRMAR</v-btn>
       </v-card-actions>
     </v-card>
     <v-overlay :value="overlay">

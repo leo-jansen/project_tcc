@@ -13,8 +13,9 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@devexpress/analytics-core": "^23.2.4",
     "axios": "^1.6.7",
-    "devextreme": "23.2.4",
+    "devextreme": "^23.2.4",
     "devextreme-vue": "23.2.4",
     "pinia": "^2.1.7",
     "vue": "^3.4.15",
