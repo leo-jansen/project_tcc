@@ -188,7 +188,7 @@ export default defineComponent({
     },
     async updateRow(e: RowUpdatingEvent) {
       let user = e.oldData
-      for (item in e.newData) {
+      for (var item in e.newData) {
         user[`${item}`] = e.newData[`${item}`]
       }
       try {
